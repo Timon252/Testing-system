@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="TestingSystem.Views.AdminTopicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TestingSystem.Views"
+             xmlns:converter="clr-namespace:TestingSystem.Converters"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:NullImageConverter x:Key="nullImageConverter"/>
+    </UserControl.Resources>
+    <Grid>
+
+        <StackPanel>
+            <Button Style="{StaticResource BaseButton_1}"  cal:Message.Attach="TopiceImageChoice" Visibility="{Binding TopicImageAddButtonVisibility}" Content="Добавить картинку"/>
+            <Grid cal:Message.Attach="[Event MouseEnter] = [Action TopicImageMouseEnter]; 
+                                      [Event MouseLeave] = [Action TopicImageMouseLeave]">
+                <Image Style="{StaticResource BaseImage}"  Source="{Binding TopicImage, Converter={StaticResource nullImageConverter}}" />
+                <DockPanel Visibility="{Binding TopicImageEditorVisibility}">
+                    <Button Style="{StaticResource BaseButton_1}"  x:Name="TopicImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
+                    <Button Style="{StaticResource BaseButton_1}" cal:Message.Attach="TopiceImageChoice" Content="Изменить"/>
+                </DockPanel>
+            </Grid>
+
+            <TextBox Style="{StaticResource MultiLineTextBox}" x:Name="TopicText" md:HintAssist.Hint="Введите текст темы" />
+            <Button Style="{StaticResource BaseButton_1}"  x:Name="TopicSave" Content="Сохранить"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

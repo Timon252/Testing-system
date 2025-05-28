@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="TestingSystem.Views.UserPreviewTestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:TestingSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DockPanel LastChildFill="False">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Style="{StaticResource TitleTextBlock}" Text="{Binding Part.Title}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource BaseTextBlock}" Text="Количество вопросов : "/>
+                    <TextBlock Style="{StaticResource BaseTextBlock}" Text="{Binding Part.Questions.Count}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource BaseTextBlock}"  Text="Время прохождения : "/>
+                    <TextBlock  Style="{StaticResource BaseTextBlock}" >
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}">
+                                <Binding Path="Time.Minutes"/>
+                                <Binding Path="Time.Seconds"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+
+
+
+
+
+                <StackPanel>
+       
+                    <TextBlock Style="{StaticResource TitleTextBlock}" VerticalAlignment="Center">
+                    Результаты
+                    </TextBlock>
+
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <TextBlock Style="{StaticResource BaseTextBlock}" Text="Количество правильных ответов :"/>
+                        <TextBlock Style="{StaticResource BaseTextBlock}" Text="{Binding TestPart.CountCorrect}"/>
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <TextBlock Style="{StaticResource BaseTextBlock}" Text="Дата прохождения : "/>
+                        <TextBlock Style="{StaticResource BaseTextBlock}" Text="{Binding TestPart.Date}"/>
+                    </StackPanel>
+                    
+                    
+           
+                
+
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.TestPart, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                   
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    
+                    </StackPanel.Style>
+                </StackPanel>
+
+
+
+            </StackPanel>
+
+
+            <Button x:Name="StartTest" Content="Начать тест" DockPanel.Dock="Bottom" IsEnabled="True">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource BaseButton_1}">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DataContext.TestPart, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="True"/>
+
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </DockPanel>
+    </Grid>
+</UserControl>

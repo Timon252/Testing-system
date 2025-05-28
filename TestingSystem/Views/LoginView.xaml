@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="TestingSystem.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TestingSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource MaterialDesignBackground}">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource TitleTextBlock}">ВХОД</TextBlock>
+                <TextBox Style="{StaticResource BaseTextBox}" x:Name="LogInLogin" md:HintAssist.Hint="ФИО" />
+                <PasswordBox Style="{StaticResource BasePasswordBox}" cal:Message.Attach="[Event PasswordChanged] = [Action LogInPasswordChanged($eventArgs)]"  md:HintAssist.Hint="Пароль" />
+                <Button Style="{StaticResource BaseButton_1}" x:Name="LogInButtonClick" Content="ВОЙТИ"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Style="{StaticResource TitleTextBlock}">РЕГИСТРАЦИЯ</TextBlock>
+                <TextBox Style="{StaticResource BaseTextBox}" x:Name="SignInLogin" md:HintAssist.Hint="Логин" />
+                <TextBox Style="{StaticResource BaseTextBox}" x:Name="SignInName" md:HintAssist.Hint="ФИО"  />
+                <PasswordBox Style="{StaticResource BasePasswordBox}" cal:Message.Attach="[Event PasswordChanged] = [Action SignInPasswordChanged($eventArgs)]" md:HintAssist.Hint="Пароль" />
+                <ComboBox Style="{StaticResource BaseComboBox}" ItemsSource="{Binding GroupCollection}"  SelectedItem="{Binding SelectedGroup}" md:HintAssist.Hint="Группа">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}">
+                                        <Binding Path="Title"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Style="{StaticResource BaseButton_1}" Name="SignInButtonClick" Content="ЗАРЕГИСТРИРОВАТЬСЯ"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

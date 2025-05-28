@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="TestingSystem.Views.AdminTreeView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TestingSystem.Views"
+      xmlns:model="clr-namespace:TestingSystem.Models"
+      xmlns:context="clr-namespace:TestingSystem.TestingSystemDbContext"       
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:cal="http://www.caliburnproject.org"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <md:ColorZone Mode="Dark" VerticalAlignment="Stretch"  Grid.Column="0">
+            <DockPanel  LastChildFill="False">
+
+                <StackPanel  DockPanel.Dock="Top">
+                    <Button Margin="8"  x:Name="Exit" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}"  >
+                    <md:PackIcon Kind="ExitToApp"/>
+                </Button>
+                <TreeView 
+                  ItemsSource="{Binding Context.Sections.Local}"  
+                  cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($this)]" TextBlock.Foreground="{StaticResource MaterialDesignLightBackground}"  >
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Parts}">
+                            <Grid>
+                                <TextBlock x:Name="SectionTitleTextBlock" 
+                                       Margin="0 4 0 0" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       cal:Message.Attach="[Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs)]"/>
+                                <TextBox x:Name="SectionTitleTextBox" 
+                                     Visibility="Hidden"
+                                     Text="{Binding Title, UpdateSourceTrigger=LostFocus}"
+                                     cal:Message.Attach="[Event LostFocus] = [Action LostFocus($this)]"/>
+                            </Grid>
+                            <HierarchicalDataTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type TreeViewItem}}}" Value="True"/>
+                                        <Condition Binding="{Binding DataContext.IsInEditMode, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="SectionTitleTextBox" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="SectionTitleTextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=SectionTitleTextBox}" />
+                                    <Setter TargetName="SectionTitleTextBlock" Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+
+
+                            <HierarchicalDataTemplate.ItemTemplate>
+
+                                <HierarchicalDataTemplate ItemsSource="{Binding Path=Topics}">
+                                    <Grid>
+                                        <TextBlock x:Name="SectionTitleTextBlock" 
+                                       Margin="0 4 0 0" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       cal:Message.Attach="[Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs)]"/>
+                                        <TextBox x:Name="SectionTitleTextBox" 
+                                     Visibility="Hidden"
+                                     Text="{Binding Title, UpdateSourceTrigger=LostFocus}"
+                                     cal:Message.Attach="[Event LostFocus] = [Action LostFocus($this)]"/>
+                                    </Grid>
+                                    <HierarchicalDataTemplate.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type TreeViewItem}}}" Value="True"/>
+                                                <Condition Binding="{Binding DataContext.IsInEditMode, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="SectionTitleTextBox" Property="Visibility" Value="Visible" />
+                                            <Setter TargetName="SectionTitleTextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=SectionTitleTextBox}" />
+                                            <Setter TargetName="SectionTitleTextBlock" Property="Visibility" Value="Hidden" />
+                                        </MultiDataTrigger>
+                                    </HierarchicalDataTemplate.Triggers>
+                                    <HierarchicalDataTemplate.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock x:Name="SectionTitleTextBlock" 
+                                       Margin="0 4 0 0" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       cal:Message.Attach="[Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs)]"/>
+                                                <TextBox x:Name="SectionTitleTextBox" 
+                                     Visibility="Hidden"
+                                     Text="{Binding Title, UpdateSourceTrigger=LostFocus}"
+                                     cal:Message.Attach="[Event LostFocus] = [Action LostFocus($this)]"/>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type TreeViewItem}}}" Value="True"/>
+                                                        <Condition Binding="{Binding DataContext.IsInEditMode, RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="SectionTitleTextBox" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="SectionTitleTextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=SectionTitleTextBox}" />
+                                                    <Setter TargetName="SectionTitleTextBlock" Property="Visibility" Value="Hidden" />
+                                                </MultiDataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </HierarchicalDataTemplate.ItemTemplate>
+                                </HierarchicalDataTemplate>
+
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView> 
+                </StackPanel>
+                
+       
+     
+            
+            <StackPanel  DockPanel.Dock="Bottom" Orientation="Horizontal">
+                    <Button Style="{StaticResource BaseButton_1}"  x:Name="SelectedItemDelete" Content="Удалить"/>
+                <Button Style="{StaticResource BaseButton_1}" x:Name="SelectedItemAdd" Content="Добавить"/>
+            </StackPanel>
+          
+        </DockPanel>
+        </md:ColorZone>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+         
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <md:ColorZone Grid.Row="0" md:ColorZoneAssist.Mode="PrimaryMid" >
+                <Grid Visibility="{Binding CountQuestionsVisibility}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{StaticResource BaseButton_1}" Grid.Column="0" x:Name="QuestionDelete">
+                        <md:PackIcon Kind="DeleteOutline"/>
+                    </Button>
+                    <StackPanel Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Style="{StaticResource BaseButton_1}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NavigateToPreviousQuestion">
+                            <md:PackIcon Kind="ArrowLeft" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <TextBlock Style="{StaticResource BaseTextBlock}" Text="{Binding NumberQuestion}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource BaseTextBlock}" HorizontalAlignment="Center" VerticalAlignment="Center">/</TextBlock>
+                        <TextBlock  Style="{StaticResource BaseTextBlock}" Text="{Binding SelectedItem.Questions.Count}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Style="{StaticResource BaseButton_1}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NavigateToNextQuestion">
+                            <md:PackIcon Kind="ArrowRight" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+ 
+                    <Button Style="{StaticResource BaseButton_1}" Grid.Column="2" x:Name="QuestionAdd">
+                        <md:PackIcon Kind="Add"/>
+                </Button>
+               
+            </Grid>
+            </md:ColorZone>
+            <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
+        </Grid>
+    </Grid>
+</UserControl>
